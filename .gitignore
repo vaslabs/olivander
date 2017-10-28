@@ -19,3 +19,4 @@ project/plugins/project/
 
 # InteliJ IDEA
 .idea
+*.iml
