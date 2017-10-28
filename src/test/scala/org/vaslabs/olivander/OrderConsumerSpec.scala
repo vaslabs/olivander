@@ -28,8 +28,6 @@ class OrderConsumerSpec extends TestKit(ActorSystem.create("OlivanderSystem")) w
 
     Source(streamList).map(OrderMessage).runWith(sink)
 
-    Thread.sleep(1000)
-
     orderHistoryRepo ! OrderHistoryRepo.Get(1)
 
     expectMsg(List(Order(1)))
