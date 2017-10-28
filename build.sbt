@@ -26,5 +26,6 @@ libraryDependencies ++= Seq(
   "de.knutwalker" %% "akka-stream-circe" % "3.4.0",
   "de.knutwalker" %% "akka-http-circe" % "3.4.0",
   "de.knutwalker" %% "akka-stream-json" % "3.3.0",
-  "de.knutwalker" %% "akka-http-json" % "3.3.0"
+  "de.knutwalker" %% "akka-http-json" % "3.3.0",
+  "com.github.tototoshi" %% "scala-csv" % "1.3.5"
 )
