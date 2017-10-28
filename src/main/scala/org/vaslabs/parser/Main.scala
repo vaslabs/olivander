@@ -3,13 +3,15 @@
       import java.io.File
 
       import com.github.tototoshi.csv.{CSVReader, CSVWriter}
+      import org.vaslabs.olivander.domain.model._
 
       import scala.io.Source
 
       object Main {
 
         def main(args: Array[String]): Unit ={
-          val orders:List[List[String]]  = CSVReader.open(Source.fromResource("orders.csv")).all()
+          val orders:Stream[List[String]]  = CSVReader.open(Source.fromResource("orders.csv")).toStream
+
           val orderProducts:List[List[String]]  = CSVReader.open(Source.fromResource("order_products__train.csv")).all()
           val aisles:List[List[String]]  = CSVReader.open(Source.fromResource("aisles.csv")).all()
           val departments:List[List[String]]  = CSVReader.open(Source.fromResource("departments.csv")).all()
@@ -103,8 +105,5 @@
         case class FlattyProduct(val name: String, aisleName:String, departmentName:String)
 
         case class FlattyOrderProduct(val productName:String, aisleName:String, departmentName:String, addToCartOrder:Int, reordered:Int)
-
-        case class DunnhumbyProtocol(userId:Int, orderId:Int, productName:String, aisleName:String, departmentName:String,
-                                     addToCartOrder:Int, reordered:Int,  orderNum:Int, orderDow:Int, orderHod:Int, daysSincePrior:Int)
 
       }
