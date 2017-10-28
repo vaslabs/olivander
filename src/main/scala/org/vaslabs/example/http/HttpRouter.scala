@@ -5,6 +5,7 @@ import akka.http.scaladsl.server.Directives.{as, complete, entity, path, post}
 import akka.http.scaladsl.server.Route
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import org.vaslabs.example.Query
+import io.circe.generic.auto._
 
 trait HttpRouter extends FailFastCirceSupport
 {
