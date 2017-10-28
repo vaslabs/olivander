@@ -10,7 +10,7 @@
       object Main {
 
         def main(args: Array[String]): Unit ={
-          val orders:Stream[List[String]]  = CSVReader.open(Source.fromResource("orders.csv")).toStream
+          val orders:Stream[List[String]]  = CSVReader.open(Source.fromResource("orders_sample.csv")).toStream
 
           val orderProducts:List[List[String]]  = CSVReader.open(Source.fromResource("order_products__train.csv")).all()
           val aisles:List[List[String]]  = CSVReader.open(Source.fromResource("aisles.csv")).all()
@@ -85,6 +85,7 @@
 
           val f = new File("out.csv")
           val writer = CSVWriter.open(f)
+
           result
             .map(r => List(r.userId,
               r.orderId,
