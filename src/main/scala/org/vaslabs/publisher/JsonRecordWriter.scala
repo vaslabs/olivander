@@ -1,9 +1,9 @@
-package org.vaslabs.example
+package org.vaslabs.publisher
 
 import com.gilt.gfc.aws.kinesis.client.{KinesisRecord, KinesisRecordWriter}
 import io.circe.{Encoder}
 import io.circe.syntax._
-import example._
+import syntax._
 
 class JsonRecordWriter[A](implicit encoder: Encoder[A], partitionKeyExtractor: PartitionKeyExtractor[A]) extends KinesisRecordWriter[A] {
 
