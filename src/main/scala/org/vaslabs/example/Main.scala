@@ -6,6 +6,7 @@ import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.stream.ActorMaterializer
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
+import org.vaslabs.example.http.HttpRouter
 
 import scala.io.StdIn
 
@@ -18,16 +19,8 @@ object Main {
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.dispatcher
 
-    val route =
-      (post & path("hello")) {
-       entity(as[Query]) {
-         query => {
-           complete(StatusCodes.OK)
-         }
-       }
-      }
-
-    val bindingFuture = Http().bindAndHandle(route, "localhost", 8080)
+    val httpRouter = new HttpRouter {}
+    val bindingFuture = Http().bindAndHandle(httpRouter.route, "localhost", 8080)
 
     println(s"Server online at http://localhost:8080/\nPress RETURN to stop...")
     StdIn.readLine() // let it run until user presses return
