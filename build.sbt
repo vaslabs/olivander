@@ -16,6 +16,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-http-testkit" % "10.0.10" % Test,
   "com.typesafe.akka" %% "akka-testkit" % akkaVersion % Test,
   "com.typesafe.akka" %% "akka-cluster" % "2.5.6",
+  "com.typesafe.akka" %% "akka-cluster-sharding" % "2.5.6",
   "org.scalatest" %% "scalatest" % "3.0.1" % Test,
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
