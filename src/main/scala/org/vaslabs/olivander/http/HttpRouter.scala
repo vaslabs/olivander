@@ -1,10 +1,10 @@
-package org.vaslabs.example.http
+package org.vaslabs.olivander.http
 
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{as, complete, entity, path, post}
 import akka.http.scaladsl.server.Route
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
-import org.vaslabs.example.Query
+import org.vaslabs.olivander.Query
 import io.circe.generic.auto._
 
 trait HttpRouter extends FailFastCirceSupport
