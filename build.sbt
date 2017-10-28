@@ -28,6 +28,7 @@ libraryDependencies ++= Seq(
   "de.knutwalker" %% "akka-http-circe" % "3.4.0",
   "de.knutwalker" %% "akka-stream-json" % "3.3.0",
   "de.knutwalker" %% "akka-http-json" % "3.3.0",
+  "com.github.tototoshi" %% "scala-csv" % "1.3.5",
   "com.gilt" %% "gfc-aws-kinesis-akka" % "0.15.1",
   "com.gilt" %% "gfc-aws-kinesis" % "0.15.1",
   "com.whisk" %% "docker-testkit-scalatest" % "0.9.5" % "test",
