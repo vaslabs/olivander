@@ -1,5 +1,7 @@
 name := "olivander"
 
+mainClass in (Compile, run) := Some("org.vaslabs.example.Main")
+
 version := "0.1"
 
 scalaVersion := "2.12.4"
