@@ -1,24 +1,67 @@
 package org.vaslabs.metrics
 
 import io.gatling.core.Predef._
+import io.gatling.core.session.Expression
 import io.gatling.http.Predef._
+
+import scala.concurrent.duration._
+import scala.util.Random
 
 class MainStimulation extends Simulation {
 
+  val request =
+    """
+       {
+ 	      "query": "{order(userId: $$userId$$) {dateAdded products {productName departmentName} orderNum userId orderHod } }"
+       }
+     """
+
+  val userIds =  {
+    val users = (120006 to 140001).toVector
+    Iterator.continually {
+      val rndIdx = Random.nextInt(users.size)
+      val userId = users(rndIdx)
+      Map("userId" -> userId)
+    }
+  }
+
+  private[this] lazy val requestPayload = request
+
+  private[this] def templateRequest(userId: Expression[String]) = {
+    StringBody {
+      session =>
+        userId(session)
+          .map(requestPayload.replace("$$userId$$", _))
+    }
+  }
+
+  protected def searchRequest = {
+    http("olivander")
+      .post("/api")
+      .header(HttpHeaderNames.ContentType, HttpHeaderValues.ApplicationJson)
+      .body(templateRequest(f"$${userId}"))
+      .check(status is 200)
+  }
+
   val httpConf = http
-    .baseURL("http://google.co.uk")
-    .acceptHeader("text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")
-    .doNotTrackHeader("1")
-    .acceptLanguageHeader("en-US,en;q=0.5")
-    .acceptEncodingHeader("gzip, deflate")
-    .userAgentHeader("Mozilla/5.0 (Windows NT 5.1; rv:31.0) Gecko/20100101 Firefox/31.0")
+    .baseURL("http://localhost:8080")
+    .acceptHeader("application/json")
+    .userAgentHeader("olivander/gatling")
 
-  val scn = scenario("BasicSimulation")
-    .exec(http("test")
-    .get("/"))
-    .pause(5)
+  val rampUpSearchLimit = repeat(50) {
+    feed(userIds).exec(searchRequest).pause(500 milliseconds)
+  }
 
-  setUp( // 11
-    scn.inject(atOnceUsers(10))
+  val rampUpUsers = scenario("Ramp up concurrent users")
+    .exec(rampUpSearchLimit)
+    .inject(rampUsersPerSec(10).to(50).during(15 seconds))
+
+  val concurrentUsers = scenario("Users at once")
+    .exec(pause(1 seconds).exec(rampUpSearchLimit))
+    .inject(atOnceUsers(25))
+
+  setUp(
+    rampUpUsers
   ).protocols(httpConf)
+
 }
