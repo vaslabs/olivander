@@ -7,15 +7,18 @@ import com.github.tototoshi.csv.CSVReader
 import org.vaslabs.olivander.domain.dunnhamby.model.Order
 import org.vaslabs.publisher.JsonRecordWriter
 import io.circe.generic.auto._
+import io.circe.java8.time._
+
+import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.duration._
 import scala.io.Source
+
 
 object DunhabbyMain extends App{
 
   val filePath = args.apply(0)
 
-  KinesisPublisher()
-
-  val kinesisConfig = config.DunhubbyStream()
+  lazy val kinesisConfig = config.DunhubbyStream()
 
   def toOrder(fields: List[String]): Order =
     Order(
@@ -28,15 +31,19 @@ object DunhabbyMain extends App{
     awsCredentialsProvider = kinesisConfig.awsCredentials
   )
 
+  implicit val executionContext = ExecutionContext.Implicits.global
   implicit val kinesisWriter = new JsonRecordWriter[Order]()
 
 
-  val iterable: Iterable[Order] = CSVReader.open(
+  CSVReader.open(
     Source.fromFile(new File(filePath))).toStream
-    .drop(1)
     .map(toOrder _)
-
-  publisher.publishBatch(kinesisConfig.streamName, iterable)
+    .foreach(order => {
+      val future = publisher.publishBatch(kinesisConfig.streamName, List(order)).map(
+        res => println(s"Wrote ${res.successRecordCount} orders")
+      )
+      Await.ready(future, 1 second)
+    })
 
 
 }

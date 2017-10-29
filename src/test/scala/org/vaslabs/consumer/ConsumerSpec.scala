@@ -1,27 +1,24 @@
 package org.vaslabs.consumer
 
 import akka.Done
-import akka.actor.{Actor, ActorLogging, ActorSystem, Props}
+import akka.actor.ActorSystem
 import akka.stream.scaladsl.Sink
 import akka.stream.{ActorMaterializer, Materializer}
 import akka.testkit.{TestKit, TestProbe}
-import akka.util.Timeout
 import com.amazonaws.services.kinesis.clientlibrary.lib.worker.InitialPositionInStream
-import com.amazonaws.services.kinesis.model.Record
 import com.gilt.gfc.aws.kinesis.akka.{KinesisNonBlockingStreamSource, KinesisStreamConsumerConfig, KinesisStreamSource}
 import com.gilt.gfc.aws.kinesis.client.{KinesisClientEndpoints, KinesisRecordReader}
 import io.circe.generic.auto._
-import org.scalatest.{AsyncFlatSpecLike, FlatSpecLike}
-import org.vaslabs.olivander.Order
+import org.scalatest.FlatSpecLike
 import org.vaslabs.olivander.kinesis.KinesisSetup
 import org.vaslabs.publisher.JsonRecordWriter
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
-import io.circe.Decoder
-import io.circe.Encoder
 import io.circe.java8.time._
 import org.vaslabs
+import org.vaslabs.olivander.domain.model.Order
+import org.vaslabs.test_utils
 
 case object start
 case object ack
@@ -65,9 +62,9 @@ class ConsumerSpec extends TestKit(ActorSystem("Olivander")) with FlatSpecLike w
 
     Future {
       publisher.publishBatch(streamName, List(
-        vaslabs.dummyOrder.copy(userId = 1),
-        vaslabs.dummyOrder.copy(userId = 2),
-        vaslabs.dummyOrder.copy(userId = 3),
+        test_utils.dummyOrder.copy(userId = 1),
+        test_utils.dummyOrder.copy(userId = 2),
+        test_utils.dummyOrder.copy(userId = 3),
       ))
     }
 
@@ -75,11 +72,11 @@ class ConsumerSpec extends TestKit(ActorSystem("Olivander")) with FlatSpecLike w
 
     testProbe.expectMsg(start)
     testProbe.reply(ack)
-    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 1))
+    testProbe.expectMsg(test_utils.dummyOrder.copy(userId = 1))
     testProbe.reply(ack)
-    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 2))
+    testProbe.expectMsg(test_utils.dummyOrder.copy(userId = 2))
     testProbe.reply(ack)
-    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 3))
+    testProbe.expectMsg(test_utils.dummyOrder.copy(userId = 3))
     testProbe.reply(ack)
   }
 

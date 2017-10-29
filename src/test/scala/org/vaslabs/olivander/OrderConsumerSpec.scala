@@ -6,9 +6,9 @@ import akka.stream.{ActorMaterializer, Materializer}
 import akka.stream.scaladsl.{Sink, Source}
 import akka.testkit.TestKit
 import org.scalatest.FlatSpecLike
-import org.vaslabs
 import org.vaslabs.olivander.OrderConsumer.OrderMessage
-import org.vaslabs.dummyOrder
+import org.vaslabs.olivander.domain.model.Order
+import org.vaslabs.test_utils
 
 class OrderConsumerSpec extends TestKit(ActorSystem.create("OlivanderSystem")) with FlatSpecLike{
 
@@ -16,7 +16,7 @@ class OrderConsumerSpec extends TestKit(ActorSystem.create("OlivanderSystem")) w
   case object ack
 
   val streamList: List[Order] =
-      (1 to 100).map(id => dummyOrder.copy(userId = id)).toList
+      (1 to 100).map(id => test_utils.dummyOrder.copy(userId = id)).toList
 
   "order consumer streaming data" should "forward to order consumer" in {
     val orderHistoryRepo: ActorRef = system.actorOf(OrderHistoryRepo.props(), "orderHistoryRepo")
@@ -32,15 +32,15 @@ class OrderConsumerSpec extends TestKit(ActorSystem.create("OlivanderSystem")) w
 
     orderHistoryRepo ! OrderHistoryRepo.Get(1)
 
-    expectMsg(List(vaslabs.dummyOrder.copy(userId = 1)))
+    expectMsg(List(test_utils.dummyOrder.copy(userId = 1)))
 
     orderHistoryRepo ! OrderHistoryRepo.Get(50)
 
-    expectMsg(List(vaslabs.dummyOrder.copy(userId = 50)))
+    expectMsg(List(test_utils.dummyOrder.copy(userId = 50)))
 
     orderHistoryRepo ! OrderHistoryRepo.Get(100)
 
-    expectMsg(List(vaslabs.dummyOrder.copy(userId = 100)))
+    expectMsg(List(test_utils.dummyOrder.copy(userId = 100)))
 
   }
 

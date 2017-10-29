@@ -2,6 +2,7 @@ package org.vaslabs.olivander
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import akka.cluster.sharding.{ClusterSharding, ClusterShardingSettings, ShardRegion}
+import org.vaslabs.olivander.domain.model.Order
 
 class OrderHistoryRepo extends Actor with ActorLogging{
 

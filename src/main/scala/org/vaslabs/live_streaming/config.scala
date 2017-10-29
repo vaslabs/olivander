@@ -30,7 +30,7 @@ object config {
                             kinesisEndpoint: EndpointConfiguration = endpointConfig,
                             awsCredentials: AWSCredentialsProvider = credentials)
 
-  case class OlivanderStream(streamName: String = "olivander-order-stream",
+  case class OlivanderStream(sourceStream: String = streamName, targetStream: String = "olivander-order-stream",
                              kinesisEndpoint: String = kinesisEndpoint,
                              aWSCredentials: AWSCredentialsProvider = credentials,
                              dynamoEndpoint: String = dynamoEndpoint)
