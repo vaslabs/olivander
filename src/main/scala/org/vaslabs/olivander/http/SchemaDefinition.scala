@@ -3,6 +3,7 @@ package org.vaslabs.olivander.http
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
+import org.vaslabs.olivander.domain.model
 import org.vaslabs.olivander.domain.model.Order
 import sangria.macros.derive._
 import sangria.schema._
@@ -17,7 +18,11 @@ object implicits {
 object SchemaDefinition {
 
   import implicits._
-  val OrderType = deriveObjectType[Unit, Order](ObjectTypeDescription("The product picture"))
+
+  implicit val ProductType: ObjectType[Unit, model.Product] =
+    deriveObjectType[Unit, model.Product](ObjectTypeDescription("The product in the basket"))
+
+  val OrderType = deriveObjectType[Unit, Order](ObjectTypeDescription("The user's order"))
 
   val Id = Argument("userId", IntType)
 
