@@ -16,3 +16,6 @@ aws --region="us-west-1" --endpoint-url=http://localhost:4568 kinesis create-str
 ```
 and
 Start the 3 main apps under live streaming
+
+DunhabbyMain needs to be started given a path as a parameter of a json file with flattened data.
+Unzip one of the files in test resources for an easy start.
