@@ -26,7 +26,7 @@ class OrderHistoryRepo extends Actor with ActorLogging{
   }
 
   private[this] def extractEntityId: ShardRegion.ExtractEntityId = {
-    case msg @ Order(userId) =>
+    case msg @ Order(userId, _, _, _,_,_, _, _, _, _, _, _) =>
       (userId.toString, msg)
     case msg @ OrderHistory.Get(userId, replyTo) =>
       (userId.toString, msg)
@@ -35,7 +35,7 @@ class OrderHistoryRepo extends Actor with ActorLogging{
   private[this] val numberOfShards = 100
 
   private[this] def extractShardId: ShardRegion.ExtractShardId = {
-    case Order(userId) ⇒ (userId % numberOfShards).toString
+    case Order(userId, _, _, _,_,_, _, _, _, _, _, _) ⇒ (userId % numberOfShards).toString
     case OrderHistory.Get(userId, replyTo) => (userId % numberOfShards).toString
     case ShardRegion.StartEntity(id) ⇒
       (id.toLong % numberOfShards).toString
