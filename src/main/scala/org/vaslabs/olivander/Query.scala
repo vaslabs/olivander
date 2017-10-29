@@ -1,3 +1,5 @@
 package org.vaslabs.olivander
 
-case class Query(body: String, variables: String)
+import io.circe.Json
+
+case class Query(query: String, variables: Option[Json])

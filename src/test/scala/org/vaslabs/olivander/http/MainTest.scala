@@ -17,9 +17,9 @@ class MainTest extends WordSpec with Matchers with ScalatestRouteTest with FailF
       val router = new HttpRouter {}
 
       // tests:
-      Post("/hello", Query("jshdfgsjhgfj", "zzzzzzzzzzzz")) ~> router.route ~> check {
-        status shouldEqual StatusCodes.OK
-      }
+//      Post("/hello", Query("jshdfgsjhgfj", "zzzzzzzzzzzz")) ~> router.route ~> check {
+//        status shouldEqual StatusCodes.OK
+//      }
     }
   }
 
