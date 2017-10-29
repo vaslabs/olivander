@@ -1,21 +1,19 @@
 package org.vaslabs.olivander.http
 
-import java.time.ZonedDateTime
 
 import akka.actor.ActorSystem
-import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives.{as, complete, entity, path, post}
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, StatusCodes}
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 import org.vaslabs.olivander.Query
-import org.vaslabs.olivander.domain.model
 import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.parser.QueryParser
 import io.circe.syntax._
-import org.vaslabs.olivander.domain.model.Order
 import sangria.marshalling.circe._
+import sangria.renderer.SchemaRenderer
 
 import scala.concurrent.ExecutionContext
 
@@ -31,6 +29,10 @@ class HttpRouter(repo: OlivanderRepo) extends FailFastCirceSupport {
         QueryParser.parse(query.query).map(doc => complete(executeQuery(doc))).getOrElse(complete(StatusCodes.BadRequest))
 
       }
+    } ~ (get & path("schema")) {
+      complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, SchemaDefinition.OlivanderProtocolSchema.renderPretty))
+    } ~ get {
+      getFromResource("graphiql.html")
     }
   }
 
