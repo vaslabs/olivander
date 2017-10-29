@@ -18,6 +18,10 @@ import org.vaslabs.publisher.JsonRecordWriter
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, Future}
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.java8.time._
+import org.vaslabs
 
 case object start
 case object ack
@@ -61,9 +65,9 @@ class ConsumerSpec extends TestKit(ActorSystem("Olivander")) with FlatSpecLike w
 
     Future {
       publisher.publishBatch(streamName, List(
-        Order(1),
-        Order(2),
-        Order(3),
+        vaslabs.dummyOrder.copy(userId = 1),
+        vaslabs.dummyOrder.copy(userId = 2),
+        vaslabs.dummyOrder.copy(userId = 3),
       ))
     }
 
@@ -71,11 +75,11 @@ class ConsumerSpec extends TestKit(ActorSystem("Olivander")) with FlatSpecLike w
 
     testProbe.expectMsg(start)
     testProbe.reply(ack)
-    testProbe.expectMsg(Order(1))
+    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 1))
     testProbe.reply(ack)
-    testProbe.expectMsg(Order(2))
+    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 2))
     testProbe.reply(ack)
-    testProbe.expectMsg(Order(3))
+    testProbe.expectMsg(vaslabs.dummyOrder.copy(userId = 3))
     testProbe.reply(ack)
   }
 
