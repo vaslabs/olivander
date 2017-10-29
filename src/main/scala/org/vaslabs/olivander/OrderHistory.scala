@@ -1,6 +1,7 @@
 package org.vaslabs.olivander
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props, Stash}
+import org.vaslabs.olivander.domain.model.Order
 
 class OrderHistory private() extends Actor with ActorLogging with Stash{
 
@@ -13,6 +14,7 @@ class OrderHistory private() extends Actor with ActorLogging with Stash{
 
   override def receive() = {
     case o: Order =>
+      log.info("Stored order {}", o)
       context.become(receiveMoreItems(List(o)))
       unstashAll()
     case g: OrderHistory.Get => stash()

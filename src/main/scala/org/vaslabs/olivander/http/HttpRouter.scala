@@ -1,5 +1,7 @@
 package org.vaslabs.olivander.http
 
+import java.time.ZonedDateTime
+
 import akka.actor.ActorSystem
 import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{as, complete, entity, path, post}
@@ -8,17 +10,18 @@ import de.heikoseeberger.akkahttpcirce.FailFastCirceSupport
 import io.circe.generic.auto._
 import org.vaslabs.olivander.Query
 import org.vaslabs.olivander.domain.model
-import org.vaslabs.olivander.domain.model.OlivanderProtocol
 import sangria.ast.Document
 import sangria.execution.Executor
 import sangria.parser.QueryParser
 import io.circe.syntax._
+import org.vaslabs.olivander.domain.model.Order
 import sangria.marshalling.circe._
-
 
 import scala.concurrent.ExecutionContext
 
-trait HttpRouter extends FailFastCirceSupport {
+class HttpRouter(repo: OlivanderRepo) extends FailFastCirceSupport {
+
+
 
   def route(implicit system: ActorSystem): Route = {
     implicit val executionContext = system.dispatcher
@@ -32,10 +35,7 @@ trait HttpRouter extends FailFastCirceSupport {
   }
 
   def executeQuery(query: Document)(implicit executionContext: ExecutionContext) = {
-    Executor.execute(SchemaDefinition.OlivanderProtocolSchema, query, new OlivanderRepo {
-      override def userOrders(userId: Int): List[model.OlivanderProtocol] =
-        List(OlivanderProtocol(userId, 1, "pn", "an", "dn", 1, 2, 1, 1, 1, 1))
-    })
+    Executor.execute(SchemaDefinition.OlivanderProtocolSchema, query, repo)
   }
 
 }

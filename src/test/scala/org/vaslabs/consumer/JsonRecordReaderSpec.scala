@@ -1,16 +1,14 @@
 package org.vaslabs.consumer
 
-import java.time.ZonedDateTime
 
-import com.gilt.gfc.aws.kinesis.client.{KCLConfiguration, KCLWorkerRunner, KinesisRecordReader}
-import io.circe.Decoder
+import com.gilt.gfc.aws.kinesis.client.{KCLConfiguration, KCLWorkerRunner}
 import org.scalatest.FlatSpec
-import org.vaslabs.olivander.Order
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.concurrent.duration._
 import io.circe.generic.auto._
 import io.circe.java8.time._
+import org.vaslabs.olivander.domain.model.Order
 
 class JsonRecordReaderSpec extends FlatSpec {
 

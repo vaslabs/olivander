@@ -1,6 +1,7 @@
 package org.vaslabs.olivander
 
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
+import org.vaslabs.olivander.domain.model.Order
 
 class OrderConsumer private (orderHistoryRepo: ActorRef, start: Serializable, ack: Serializable, done: Serializable)
   extends Actor with ActorLogging

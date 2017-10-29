@@ -3,7 +3,7 @@
       import java.io.File
 
       import com.github.tototoshi.csv.{CSVReader, CSVWriter}
-      import org.vaslabs.olivander.domain.model._
+      import org.vaslabs.olivander.domain.dunnhamby.model.Order
 
       import scala.io.Source
 
