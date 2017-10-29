@@ -8,9 +8,9 @@ import com.whisk.docker.{DockerContainer, DockerFactory, DockerKit, DockerReadyC
 trait DockerService extends DockerKit{
 
 
-    lazy val awsContainer = DockerContainer("localstack/localstack")
-      .withPorts(4568 -> Some(4568), 9000 -> Some(8080))
-      .withEnv("SERVICES=kinesis")
+  val awsContainer = DockerContainer("localstack/localstack")
+      .withPorts(4568 -> Some(4568), 9000 -> Some(8080), 4569 -> Some(4569))
+      .withEnv("SERVICES=kinesis,dynamodb")
       .withReadyChecker(DockerReadyChecker.LogLineContains("Ready."))
 
   private val client: DockerClient = DefaultDockerClient.fromEnv().build()
