@@ -24,8 +24,6 @@ case object ack
 class ConsumerSpec extends TestKit(ActorSystem("Olivander")) with FlatSpecLike with KinesisSetup {
 
 
-
-
   implicit val ex: ExecutionContext = ExecutionContext.Implicits.global
   implicit val jsonRecordWriter = new JsonRecordWriter[Order]()
 
