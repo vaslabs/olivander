@@ -22,7 +22,7 @@
           var productsMapping :Map[Int,FlattyProduct] = Map()
           var orderProductsMapping :Map[Int, FlattyOrderProduct] = Map()
 
-          var result:List[DunnhumbyProtocol] = List[DunnhumbyProtocol]()
+          var result:List[Order] = List[Order]()
 
           aisles
             .drop(1)
@@ -66,7 +66,7 @@
             .filter(x=>x.contains("train"))
             .foreach(x=> {
               println(x(0))
-              result ::= DunnhumbyProtocol(
+              result ::= Order(
                 x(1).toInt,
                 x(0).toInt,
                 orderProductsMapping.get(x(0).toInt).orNull.productName,

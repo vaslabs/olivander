@@ -1,3 +1,6 @@
 package org.vaslabs.olivander
 
-case class Order(userId: Long)
+import java.time.ZonedDateTime
+
+case class Order(userId:Int, orderId:Int, productName:String, aisleName:String, departmentName:String,
+                                  addToCartOrder:Int, reordered:Int,  orderNum:Int, orderDow:Int, orderHod:Int, daysSincePrior:Int, dateAdded: ZonedDateTime)
