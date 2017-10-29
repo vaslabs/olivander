@@ -6,6 +6,9 @@ version := "0.1"
 
 scalaVersion := "2.12.4"
 
+
+enablePlugins(GatlingPlugin)
+
 val akkaVersion = "2.5.6"
 val circeVersion = "0.8.0"
 val monocleVersion = "1.4.0"
@@ -34,5 +37,12 @@ libraryDependencies ++= Seq(
   "com.gilt" %% "gfc-aws-kinesis-akka" % "0.15.1",
   "com.gilt" %% "gfc-aws-kinesis" % "0.15.1",
   "com.whisk" %% "docker-testkit-scalatest" % "0.9.5" % "test",
-  "com.whisk" %% "docker-testkit-impl-spotify" % "0.9.5" % "test"
+  "com.whisk" %% "docker-testkit-impl-spotify" % "0.9.5" % "test",
+  "io.gatling.highcharts" % "gatling-charts-highcharts" % "2.3.0" % Test,
+  "io.gatling" % "gatling-test-framework" % "2.3.0" % Test
+
+
 )
+
+resolvers +=Resolver.bintrayRepo("gatling", "sbt-plugins")
+
