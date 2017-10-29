@@ -39,10 +39,8 @@ object DunhabbyMain extends App{
     Source.fromFile(new File(filePath))).toStream
     .map(toOrder _)
     .foreach(order => {
-      val future = publisher.publishBatch(kinesisConfig.streamName, List(order)).map(
-        res => println(s"Wrote ${res.successRecordCount} orders")
-      )
-      Await.ready(future, 1 second)
+      val future = publisher.publishBatch(kinesisConfig.streamName, List(order))
+      Await.ready(future, 2 second)
     })
 
 
