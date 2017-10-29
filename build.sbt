@@ -22,6 +22,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-generic" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
   "io.circe" %% "circe-java8" % circeVersion,
+  "org.sangria-graphql" %% "sangria" % "1.3.0",
+  "org.sangria-graphql" %% "sangria-circe" % "1.1.0",
   "de.heikoseeberger" %% "akka-http-circe" % "1.16.0",
   "com.github.pureconfig" %% "pureconfig" % "0.7.2",
   "de.knutwalker" %% "akka-stream-circe" % "3.4.0",
